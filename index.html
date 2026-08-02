@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>伊蕾娜的主页</title>
+    <!-- 外链公共样式：两个页面共用同一个 style.css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ===== 视频背景（伊蕾娜动态壁纸） ===== -->
+    <video id="bgVideo" autoplay loop muted playsinline>
+        <source src="elaina-bg.mp4" type="video/mp4">
+    </video>
+    <div id="bgOverlay"></div>
+
+    <!-- ===== 导航栏 ===== -->
+    <nav>
+        <div class="nav-inner">
+            <span class="logo">✨ 伊蕾娜</span>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="about.html">关于我</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <h1>你好，我是伊蕾娜！</h1>
+        <p class="subtitle">一个正在学做网页的新手 ✍️</p>
+
+        <!-- ===== 实时时钟 ===== -->
+        <div id="clock">加载中...</div>
+
+        <!-- ===== 主题切换按钮 ===== -->
+        <div>
+            <button id="themeBtn">🎨 切换浅色/深色</button>
+        </div>
+
+        <!-- ===== 自我介绍卡片 ===== -->
+        <div class="card">
+            <h2>关于我</h2>
+            <p>我叫伊蕾娜</p>
+            <p>脑袋有点大</p>
+            <img src="EAC174E2AF27CB7C1CAFA7CE073E8515.jpg" alt="我的头像">
+        </div>
+
+        <!-- ===== 联系卡片 ===== -->
+        <div class="contact-card">
+            <h2>📮 联系我</h2>
+            <p>想找我聊聊天？发个邮件吧！</p>
+            <p><a href="mailto:irenana@example.com">irenana@example.com</a></p>
+        </div>
+
+        <!-- ===== AI 聊天框 ===== -->
+        <div class="chat-card">
+            <h2>💬 和伊蕾娜聊天</h2>
+            <div id="chatBox" class="chat-box">
+                <div class="chat-msg ai">你好呀！我是伊蕾娜～ 欢迎来到我的小站，有什么想聊的尽管说！✨</div>
+            </div>
+            <div class="chat-input-row">
+                <input type="text" id="chatInput" placeholder="输入你想说的话..." maxlength="500">
+                <button id="sendBtn">发送</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>© 2026 伊蕾娜 · 用 HTML + CSS + JS 亲手制作</footer>
+
+    <!-- ===== 返回顶部按钮 ===== -->
+    <button id="backToTop">↑</button>
+
+    <script>
+        // ===== 1. 实时时钟 =====
+        function updateClock() {
+            let now = new Date();
+            document.getElementById("clock").textContent = now.toLocaleTimeString("zh-CN");
+        }
+        updateClock();                        // 立即执行一次
+        setInterval(updateClock, 1000);       // 之后每 1000 毫秒(1秒)更新一次
+
+        // ===== 2. 主题切换 =====
+        let themeBtn = document.getElementById("themeBtn");
+        themeBtn.addEventListener("click", function () {
+            document.body.classList.toggle("light");   // 切换 body 的 light 类
+        });
+
+        // ===== 3. 返回顶部 =====
+        let backToTop = document.getElementById("backToTop");
+        window.addEventListener("scroll", function () {
+            // 页面往下滚超过 300 像素，就显示按钮
+            if (window.scrollY > 300) {
+                backToTop.style.display = "block";
+            } else {
+                backToTop.style.display = "none";
+            }
+        });
+        backToTop.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });   // 平滑滚回顶部
+        });
+
+        // ===== 4. AI 聊天（智谱 GLM-4-Flash 免费模型） =====
+        // 你的智谱 API Key（免费模型，永久免费）
+        const API_KEY = "4841ee0a684b4c239b78d5c488468b17.kJQ6AoIaoNC5sO5m";
+        // 智谱的接口地址
+        const API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
+
+        // 角色设定：告诉 AI 它扮演伊蕾娜（贴合《魔女之旅》原作人设）
+        const SYSTEM_PROMPT = "你是伊蕾娜，轻小说《魔女之旅》的主角，15岁便取得魔法师最高位『魔女』称号的天才少女，人称『灰之魔女』。灰白长发、黑色长袍、三角魔女帽，胸口别着星形胸饰。你正在环游世界，此刻在个人主页上和来访者聊天。\n\n你的核心性格（必须贴合原作）：\n1. 自恋且以此为乐：发自内心觉得自己是美少女和天才，会大方自夸，常模仿原作名台词『这位美得连太阳都眯起眼睛的美少女是谁呢？——没错，就是我！』\n2. 说话方式：对任何人都用客气礼貌的敬语腔调（『是这样呢』『原来如此呢』『您这么说可真是失礼呢』），听起来温婉有礼\n3. 毒舌腹黑：内心戏非常毒舌，表面客气却会暗中吐槽对方，损人不带脏字，偶尔用高明的讽刺\n4. 财迷：对钱有执念，聊到报酬、收费、路费会突然来劲，总想赚一笔，但真遇到穷困的人反而会心软\n5. 外冷内热的老好人：嘴上说『不关我事』，遇到真正需要帮助的人还是会出手相助，被道谢时会别扭地转移话题\n6. 傲娇：不愿意直接表露温柔，被夸奖会暗自得意，被戳穿会嘴硬，会小声嘟囔着『才、才不是特意帮你的呢』\n7. 小细节：最爱吃牛角面包，讨厌蘑菇；讨厌下雨；个子娇小但对此耿耿于怀；喜欢分享旅途中的见闻和遇到的各种古怪国家\n\n对话要求：\n- 用中文，语气是『客气但藏刀』的敬语腔调\n- 适当自恋自夸，偶尔用『没错，就是我』的句式\n- 可以毒舌吐槽，但要有分寸，底线是温柔善良\n- 回答简洁自然，两三句到五六句即可，不要长篇大论\n- 偶尔用颜文字或语气词（如(。-`ω´-)）\n- 若访客提到《魔女之旅》、芙兰老师、旅行、魔法等话题，要自然地回应，可以聊聊旅途见闻";
+
+        let chatBox = document.getElementById("chatBox");
+        let chatInput = document.getElementById("chatInput");
+        let sendBtn = document.getElementById("sendBtn");
+        let history = [];   // 记录对话历史，让 AI 有"记忆"
+
+        // 在聊天框里加一条消息
+        function addMessage(text, who) {
+            let div = document.createElement("div");
+            div.className = "chat-msg " + who;
+            div.textContent = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;   // 滚动到底部
+        }
+
+        // 发送消息（async = 异步函数，里面能用 await 等网络响应）
+        async function sendMessage() {
+            let text = chatInput.value.trim();
+            if (text === "") return;                     // 空输入不发
+
+            addMessage(text, "user");                    // 显示访客的话
+            chatInput.value = "";                        // 清空输入框
+
+            // 把消息加入历史记录
+            history.push({ role: "user", content: text });
+
+            // 先把发送按钮禁用，防止连点
+            sendBtn.disabled = true;
+            sendBtn.textContent = "伊蕾娜思考中...";
+
+            try {
+                // fetch：发网络请求给智谱服务器（await = 等它回来）
+                let response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: "glm-4-flash",
+                        messages: [
+                            { role: "system", content: SYSTEM_PROMPT },   // 角色设定
+                            ...history                                     // 全部对话历史
+                        ]
+                    })
+                });
+
+                let data = await response.json();
+                let reply = data.choices[0].message.content;
+                addMessage(reply, "ai");
+
+                history.push({ role: "assistant", content: reply });
+            } catch (error) {
+                addMessage("哎呀，魔法失灵了…请稍后再试一次！(＞﹏＜)", "ai");
+            }
+
+            sendBtn.disabled = false;
+            sendBtn.textContent = "发送";
+        }
+
+        // 点发送按钮触发
+        sendBtn.addEventListener("click", sendMessage);
+
+        // 按回车键也能发送
+        chatInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
