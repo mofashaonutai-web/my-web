@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的第一个网页</title>
+    <style>
+        body {
+            background-color: #1e1e2e;
+            font-family: "Microsoft YaHei", sans-serif;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        h1 {
+            color: #89b4fa;
+            font-size: 48px;
+        }
+
+        p {
+            color: #cdd6f4;
+            font-size: 20px;
+        }
+
+        div {
+            background-color: #313244;
+            border-radius: 16px;   /* 圆角 */
+            padding: 30px;          /* 盒子内部留白 */
+            width: 400px;
+            margin: 40px auto;      /* 水平居中 */
+        }
+
+        button {
+            background-color: #89b4fa;
+            color: #1e1e2e;
+            border: none;
+            padding: 14px 28px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>你好，世界！</h1>
+    <p>这是我的第一个网页。</p>
+    <p>我是最棒的。</p>
+    <div>
+        <p>我叫伊雷娜</p>
+        <p>脑袋有点大</p>
+    </div>
+
+    <button id="myButton">点我试试</button>
+
+    <script>
+        // 找到那个按钮
+        let button = document.getElementById("myButton");
+
+        // 给它"挂上"点击事件
+        button.addEventListener("click", function () {
+            alert("你好！我是 JavaScript，你成功点击了我！");
+        });
+    </script>
+</body>
+</html>
