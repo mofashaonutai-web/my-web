@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>关于我 - 伊蕾娜</title>
+    <!-- 外链公共样式：和首页共用同一个 style.css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ===== 导航栏（和首页一样） ===== -->
+    <nav>
+        <div class="nav-inner">
+            <span class="logo">✨ 伊蕾娜</span>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="about.html">关于我</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <h1>关于我</h1>
+        <p class="subtitle">点一点下面的卡片，看看我的爱好 👇</p>
+
+        <!-- ===== 兴趣爱好卡片 ===== -->
+        <div class="hobby-grid">
+            <div class="hobby-card" data-message="🎮 打游戏最开心了！">
+                <span class="emoji">🎮</span>
+                <h3>打游戏</h3>
+                <p>休闲玩家，菜但爱玩</p>
+            </div>
+            <div class="hobby-card" data-message="🎬 追番使我快乐！">
+                <span class="emoji">🎬</span>
+                <h3>看动漫</h3>
+                <p>追番达人，二刷狂魔</p>
+            </div>
+            <div class="hobby-card" data-message="🎧 歌单循环一整天！">
+                <span class="emoji">🎧</span>
+                <h3>听音乐</h3>
+                <p>什么都听，最爱日系</p>
+            </div>
+            <div class="hobby-card" data-message="🍰 甜点是生命之光！">
+                <span class="emoji">🍰</span>
+                <h3>吃甜点</h3>
+                <p>奶茶蛋糕都爱</p>
+            </div>
+        </div>
+
+        <!-- ===== 提示文字（JS 会改这里） ===== -->
+        <p id="hobbyMsg" style="margin-top: 32px; font-size: 18px; color: var(--accent-color);">
+            （点卡片试试！）
+        </p>
+    </main>
+
+    <footer>© 2026 伊蕾娜 · 用 HTML + CSS + JS 亲手制作</footer>
+
+    <script>
+        // ===== 点卡片弹出爱好提示 =====
+        // 1. 找到所有 .hobby-card 卡片
+        let cards = document.querySelectorAll(".hobby-card");
+
+        // 2. 给每张卡片都装上点击监听
+        cards.forEach(function (card) {
+            card.addEventListener("click", function () {
+                // 3. 读取这张卡片 data-message 里的文字，显示到页面上
+                let msg = card.getAttribute("data-message");
+                document.getElementById("hobbyMsg").textContent = msg;
+            });
+        });
+    </script>
+</body>
+</html>
