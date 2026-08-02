@@ -32,6 +32,30 @@ html {
     scroll-behavior: smooth;
 }
 
+/* ========== 视频背景 ========== */
+
+/* 全屏视频层：固定在最底层 */
+#bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;      /* 视频铺满全屏，不变形 */
+    z-index: -2;            /* 放到所有内容后面 */
+}
+
+/* 半透明遮罩：让视频变暗一点，保证上面的文字清晰可读 */
+#bgOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.45);   /* 45% 黑色半透明 */
+    z-index: -1;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
